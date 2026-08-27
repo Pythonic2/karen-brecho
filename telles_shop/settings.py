@@ -1,7 +1,11 @@
 import os
+import sys
 from pathlib import Path
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / '.env')
+TESTING = 'test' in sys.argv
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'dev-only-telles-thrift-shop-key')
 DEBUG = os.getenv('DJANGO_DEBUG', 'True').lower() in ('1', 'true', 'yes')
 ALLOWED_HOSTS = [host.strip() for host in os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',') if host.strip()]
@@ -45,7 +49,7 @@ STORAGES = {
     'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
     'staticfiles': {'BACKEND': (
         'django.contrib.staticfiles.storage.StaticFilesStorage'
-        if DEBUG else
+        if DEBUG or TESTING else
         'whitenoise.storage.CompressedManifestStaticFilesStorage'
     )},
 }
