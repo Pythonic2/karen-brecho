@@ -41,14 +41,14 @@ Run checks with:
 
 ## Docker deployment
 
-Production settings are centralized in Portainer's stack environment variables. Use “Load variables from .env file” to import the root `.env`; Portainer stores those values in the stack rather than creating a physical `.env` file. Compose passes the imported variables to Django without duplicating their values in YAML. The current base URL is `https://gestcloud.com.br`.
+Production settings are centralized in Portainer's stack environment variables. Use “Load variables from .env file” to import the root `.env`; Portainer stores those values in the stack rather than creating a physical `.env` file. Compose passes the imported variables to Django without duplicating their values in YAML. The current base URL is `https://telles-thrift-shop.gestcloud.com.br`.
 
 ```bash
 docker compose up -d --build
 docker compose exec app python manage.py createsuperuser
 ```
 
-The application is published on host port `8002` (`8002:8000`) and joins the existing external Docker network `pi_default`. The project is mounted at `/app`, so SQLite, uploaded media and collected static files remain in the root project directories. Configure the existing HTTPS reverse proxy to forward `gestcloud.com.br` to `telles-thrift-shop:8000` through `pi_default`, or to `127.0.0.1:8002` from the host.
+The application is published on host port `8002` (`8002:8000`) and joins the existing external Docker network `pi_default`. SQLite, uploaded media and collected static files use named volumes; the application code remains safely inside the built image. Configure the existing HTTPS reverse proxy to forward `telles-thrift-shop.gestcloud.com.br` to `telles-thrift-shop:8000` through `pi_default`, or to `127.0.0.1:8002` from the host.
 
 To load the optional demonstration catalog:
 

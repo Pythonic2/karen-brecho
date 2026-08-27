@@ -24,7 +24,9 @@ services:
       - DEFAULT_FROM_EMAIL
     command: ["gunicorn", "telles_shop.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "60", "--access-logfile", "-", "--error-logfile", "-"]
     volumes:
-      - .:/app
+      - database_data:/app/data
+      - media_data:/app/media
+      - static_data:/app/staticfiles
     ports:
       - "8002:8000"
     networks:
@@ -39,3 +41,8 @@ services:
 networks:
   pi_default:
     external: true
+
+volumes:
+  database_data:
+  media_data:
+  static_data:
