@@ -7,9 +7,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
 TESTING = 'test' in sys.argv
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'dev-only-telles-thrift-shop-key')
-DEBUG = True
-# ALLOWED_HOSTS = [host.strip() for host in os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',') if host.strip()]
-CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',') if origin.strip()]
+DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() in ('1', 'true', 'yes')
+DEPLOYMENT_HOSTS = {'telles-thrift-shop.gestcloud.com.br', '127.0.0.1', 'localhost'}
+ALLOWED_HOSTS = sorted(DEPLOYMENT_HOSTS | {
+    host.strip() for host in os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',') if host.strip()
+})
+CSRF_TRUSTED_ORIGINS = sorted({'https://telles-thrift-shop.gestcloud.com.br'} | {
+    origin.strip() for origin in os.getenv('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',') if origin.strip()
+})
 
 INSTALLED_APPS = [
     'django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes',
