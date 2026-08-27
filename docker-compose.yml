@@ -22,13 +22,13 @@ services:
       - EMAIL_HOST_PASSWORD
       - EMAIL_USE_TLS
       - DEFAULT_FROM_EMAIL
-    command: ["gunicorn", "telles_shop.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "60", "--access-logfile", "-", "--error-logfile", "-"]
+    command: ["gunicorn", "telles_shop.wsgi:application", "--bind", "0.0.0.0:8002", "--workers", "3", "--timeout", "60", "--access-logfile", "-", "--error-logfile", "-"]
     volumes:
       - database_data:/app/data
       - media_data:/app/media
       - static_data:/app/staticfiles
     ports:
-      - "8002:8000"
+      - "8002:8002"
     networks:
       - pi_default
     healthcheck:
