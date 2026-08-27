@@ -19,7 +19,7 @@ RUN mkdir -p /app/data /app/media /app/staticfiles \
 
 USER django
 
-EXPOSE 8000
+EXPOSE 8002
 
 ENTRYPOINT ["sh", "/app/docker-entrypoint.sh"]
-CMD ["gunicorn", "telles_shop.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "60", "--access-logfile", "-", "--error-logfile", "-"]
+CMD ["gunicorn", "telles_shop.wsgi:application", "--bind", "0.0.0.0:8002", "--workers", "3", "--timeout", "60", "--access-logfile", "-", "--error-logfile", "-"]
