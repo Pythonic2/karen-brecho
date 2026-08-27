@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Registration complete · Telles' Thrift Shop{% endblock %}
+{% block content %}
+<main class="payment-page"><div class="success-mark">✓</div><p class="eyebrow">Registration complete</p><h1>Welcome, {{ supplier_name }}!</h1>
+  <p>Your supplier details have been saved. The Telles' Thrift Shop team can now manage your pieces through the store administration.</p>
+  <p class="muted">Your consignment percentage will be calculated automatically when each piece is sold.</p>
+  <a class="button button-large" href="{% url 'catalog:home' %}">Return to welcome page</a>
+</main>
+{% endblock %}

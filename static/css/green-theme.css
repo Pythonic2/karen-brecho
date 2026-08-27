@@ -1,0 +1,41 @@
+:root{
+  --ink:#062b09;
+  --cream:#f5f4ec;
+  --paper:#fffef8;
+  --rose:#07380b;
+  --rose-dark:#042707;
+  --sage:#39703d;
+  --line:#d7d1b8;
+  --gold:#a47712;
+  --pale-green:#e4ece1;
+  --pale-gold:#f1ead7;
+  --shadow:0 12px 35px rgba(7,56,11,.11);
+}
+
+body{background:linear-gradient(135deg,#f7f6ef 0%,#f0f3e9 100%);color:var(--ink)}
+.site-header{border-bottom-color:rgba(164,119,18,.35)}
+.brand img{border-radius:0;object-fit:contain}
+.brand,.site-header nav a:hover{color:var(--rose)}
+.eyebrow{color:var(--gold)}
+.button{background:var(--rose);box-shadow:inset 0 -2px 0 rgba(164,119,18,.35)}
+.button:hover{background:var(--rose-dark)}
+.button.secondary{background:transparent;color:var(--rose);border-color:var(--gold)}
+.welcome{background:radial-gradient(circle at 80% 30%,rgba(164,119,18,.17),transparent 28%),linear-gradient(135deg,#f7f6ef,#e8eee4)}
+.welcome-logo{border-radius:0;box-shadow:none;object-fit:contain}
+.category.active,.category:hover{background:var(--pale-green);color:var(--rose)}
+.search input:focus,.field input:focus,select:focus,.report-filters input:focus{outline:2px solid rgba(164,119,18,.45);border-color:var(--gold)}
+.product-icon{height:210px!important;padding:18px;background:linear-gradient(145deg,var(--pale-green),var(--pale-gold))!important;display:flex!important;align-items:center;justify-content:center}
+.product-icon img{display:block;width:auto!important;height:auto!important;max-width:82%!important;max-height:100%!important;object-fit:contain!important;filter:drop-shadow(0 6px 8px rgba(7,56,11,.15))}
+.product-card,.cart-panel,.checkout-form,.checkout-page>section,.supplier-report,.summary-grid>div,.empty,.supplier-form-card{border-color:rgba(164,119,18,.25)}
+.product-code,.muted,small{color:#64705f}
+.terms,thead th,tfoot th{background:var(--pale-gold)}
+.terms{border-left-color:var(--gold)}
+.message{border-left-color:var(--gold)}
+.success-mark{background:var(--rose);border:3px solid var(--gold)}
+.rate-explanation>div strong{color:var(--gold)}
+.fake-qr{outline:4px solid var(--gold)}
+
+@media(max-width:700px){
+  .product-icon{height:160px!important;padding:14px}
+  .product-icon img{max-width:78%!important}
+}

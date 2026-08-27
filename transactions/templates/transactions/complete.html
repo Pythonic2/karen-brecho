@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Payment · Telles' Thrift Shop{% endblock %}
+{% block content %}
+<main class="payment-page">
+  {% if sale.status == 'pending' %}
+    <p class="eyebrow">Development checkout</p><h1>PIX payment simulation</h1>
+    <div class="fake-qr">PIX<br><small>TEST</small></div><p>Total: <strong>R$ {{ sale.total|floatformat:2 }}</strong></p>
+    <p class="muted">No real payment will be charged in this development version.</p>
+    <form method="post" action="{% url 'transactions:simulate_payment' %}">{% csrf_token %}<button class="button button-large" type="submit">Simulate approved payment</button></form>
+  {% else %}
+    <div class="success-mark">✓</div><p class="eyebrow">Payment approved</p><h1>Thank you, {{ sale.customer.name }}!</h1>
+    <p>Your receipt for sale #{{ sale.id }} was sent to <strong>{{ sale.customer.email }}</strong>.</p><p>Returning to the welcome screen shortly…</p>
+    <a class="button" href="{% url 'catalog:home' %}">Finish now</a><script>setTimeout(() => location.href = "{% url 'catalog:home' %}", 12000);</script>
+  {% endif %}
+</main>
+{% endblock %}

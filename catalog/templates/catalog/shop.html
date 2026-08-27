@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Shop · Telles' Thrift Shop{% endblock %}
+{% block content %}
+<main class="shop-layout">
+  <aside class="filters">
+    <h2>Categories</h2>
+    <a class="category {% if not selected_category %}active{% endif %}" href="{% url 'catalog:shop' %}">✦ All pieces</a>
+    {% for category in categories %}
+      <a class="category {% if selected_category == category.slug %}active{% endif %}" href="?category={{ category.slug }}">{{ category.icon }} {{ category.name }}</a>
+    {% endfor %}
+  </aside>
+  <section class="catalog">
+    <div class="catalog-heading"><div><p class="eyebrow">Pre-loved, one of a kind</p><h1>Find your piece</h1></div></div>
+    <form class="search" hx-get="{% url 'catalog:shop' %}" hx-target="#product-grid" hx-push-url="true" hx-trigger="input changed delay:350ms, submit">
+      <input type="search" name="q" value="{{ query }}" placeholder="Search dresses, skirts, trousers…" aria-label="Search products">
+      {% if selected_category %}<input type="hidden" name="category" value="{{ selected_category }}">{% endif %}
+    </form>
+    {% include 'catalog/partials/product_grid.html' %}
+  </section>
+  <aside id="cart-panel" class="cart-panel" aria-live="polite" hx-get="{% url 'transactions:cart' %}" hx-trigger="load">
+    <p>Loading your bag…</p>
+  </aside>
+</main>
+{% endblock %}

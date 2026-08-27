@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Supplier statement · Telles' Thrift Shop{% endblock %}
+{% block content %}
+<main class="statement-page">
+  <div class="statement-heading"><div><p class="eyebrow">Private supplier statement</p><h1>Hello, {{ supplier.name }}</h1><p>Track your consigned pieces and balance. Keep this private link safe.</p></div><div class="statement-rate"><span>Current rate</span><strong>{{ supplier.consignment_rate_percent|floatformat:0 }}%</strong><small>{{ supplier.consignment_rate_mode }}</small></div></div>
+  <section class="balance-cards"><div><span>Total earned</span><strong>R$ {{ total_earned|floatformat:2 }}</strong><small>Your share from customer-paid sales</small></div><div><span>Already paid</span><strong>R$ {{ total_paid|floatformat:2 }}</strong><small>Consolidated transfers received</small></div><div class="balance-due"><span>Still to receive</span><strong>R$ {{ outstanding_balance|floatformat:2 }}</strong><small>Current outstanding balance</small></div></section>
+
+  <section class="statement-section"><h2>Sold pieces</h2><div class="statement-grid">{% for product in sold_products %}<article class="statement-piece">{% if product.display_image %}<img src="{{ product.display_image.url }}" alt="{{ product.name }}">{% endif %}<div><small>#{{ product.code }} · {{ product.category.name }}</small><h3>{{ product.name }}</h3><p>Sold for R$ {{ product.sold_price|floatformat:2 }}</p>{% if product.sale_items %}<strong>Your share: {{ product.sale_items.supplier_rate_percent|floatformat:0 }}% · R$ {{ product.sale_items.supplier_amount|floatformat:2 }}</strong><small>Sold {{ product.sale_items.sale.created_at|date:'M d, Y' }}</small>{% endif %}</div></article>{% empty %}<div class="empty">No sold pieces yet.</div>{% endfor %}</div></section>
+
+  <section class="statement-section"><h2>Available pieces</h2><div class="statement-grid">{% for product in available_products %}<article class="statement-piece">{% if product.display_image %}<img src="{{ product.display_image.url }}" alt="{{ product.name }}">{% endif %}<div><small>#{{ product.code }} · {{ product.category.name }}</small><h3>{{ product.name }}</h3><p>Listed for R$ {{ product.listed_price|floatformat:2 }}</p><strong>Available in the shop</strong></div></article>{% empty %}<div class="empty">No available pieces.</div>{% endfor %}</div></section>
+
+  <section class="statement-section"><h2>Balance payment history</h2><div class="table-wrap"><table><thead><tr><th>Date</th><th>Amount</th><th>Receipt</th><th>Notes</th></tr></thead><tbody>{% for payment in payments %}<tr><td>{{ payment.paid_at|date:'M d, Y' }}</td><td>R$ {{ payment.amount|floatformat:2 }}</td><td><a href="{{ payment.receipt.url }}" target="_blank">View receipt</a></td><td>{{ payment.notes|default:'—' }}</td></tr>{% empty %}<tr><td colspan="4">No balance payments recorded yet.</td></tr>{% endfor %}</tbody></table></div></section>
+</main>
+{% endblock %}

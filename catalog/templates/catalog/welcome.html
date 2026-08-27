@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Welcome · Telles' Thrift Shop{% endblock %}
+{% block content %}
+<main class="welcome">
+  <div class="welcome-copy">
+    <p class="eyebrow">Fashion gets a second story</p>
+    <h1>Welcome to<br>Telles' Thrift Shop</h1>
+    <p>Practice your English while discovering unique, pre-loved pieces.</p>
+    <a class="button button-large" href="{% url 'catalog:shop' %}">Start shopping</a>
+  </div>
+  <img class="welcome-logo" src="{% static 'img/telles-logo-transparent.png' %}" alt="Telles' Thrift Shop">
+</main>
+{% endblock %}

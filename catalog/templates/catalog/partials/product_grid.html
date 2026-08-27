@@ -1,0 +1,14 @@
+<div id="product-grid" class="product-grid">
+  {% for product in products %}
+    <article class="product-card">
+      <div class="product-icon">{% if product.display_image %}<img src="{{ product.display_image.url }}" alt="{{ product.category.name }} icon">{% else %}{{ product.category.icon }}{% endif %}</div>
+      <p class="product-code">#{{ product.code }}</p>
+      <h3>{{ product.name }}</h3>
+      <p class="muted">{{ product.category.name }}</p>
+      {% if product.description %}<p>{{ product.description|truncatewords:14 }}</p>{% endif %}
+      <div class="product-buy"><strong>R$ {{ product.listed_price|floatformat:2 }}</strong>
+        <button class="button small" hx-post="{% url 'transactions:add_to_cart' product.id %}" hx-target="#cart-panel" hx-swap="innerHTML">Add</button>
+      </div>
+    </article>
+  {% empty %}<div class="empty"><h2>No pieces found</h2><p>Try another search or category.</p></div>{% endfor %}
+</div>

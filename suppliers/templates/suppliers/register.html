@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Become a supplier · Telles' Thrift Shop{% endblock %}
+{% block content %}
+<main class="supplier-registration">
+  <section class="supplier-intro">
+    <p class="eyebrow">Give your clothes a new story</p><h1>Become a supplier</h1>
+    <p>Register your details to consign pre-loved pieces at Telles' Thrift Shop.</p>
+    <div class="rate-explanation"><h2>How your share works</h2>
+      <div><strong>50%</strong><p>For opening-period pieces received and sold from September 7 through September 11.</p></div>
+      <div><strong>30%</strong><p>For pieces or new consignments after the September 11 deadline.</p></div>
+      <small>The rate is calculated automatically when a piece is sold. Suppliers cannot select or change their rate.</small>
+    </div>
+  </section>
+  <section class="supplier-form-card"><h2>Your details</h2><p class="muted">All fields are required. Your PIX key is used only for supplier payments.</p>
+    <form method="post" novalidate>{% csrf_token %}{{ form.non_field_errors }}
+      {% for field in form %}<div class="field {% if field.name == 'accept_terms' %}terms-check{% endif %}">
+        {% if field.name != 'accept_terms' %}<label for="{{ field.id_for_label }}">{{ field.label }}</label>{% endif %}{{ field }}{% if field.name == 'accept_terms' %}<label for="{{ field.id_for_label }}">{{ field.label }}</label>{% endif %}{{ field.errors }}
+      </div>{% endfor %}
+      <div class="terms"><strong>Consignment notice</strong><p>Submitting this form does not guarantee that every piece will be accepted. Items remain subject to store review. Supplier participation is calculated automatically according to the sale date and opening campaign rules.</p></div>
+      <button class="button full" type="submit">Complete registration</button>
+    </form>
+  </section>
+</main>
+{% endblock %}

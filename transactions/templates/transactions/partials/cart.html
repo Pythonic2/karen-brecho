@@ -1,0 +1,7 @@
+<h2>Your bag <span>{{ products|length }}</span></h2>
+{% for product in products %}
+  <div class="cart-line"><div><strong>{{ product.name }}</strong><small>R$ {{ product.listed_price|floatformat:2 }}</small></div>
+    <button class="text-button" aria-label="Remove {{ product.name }}" hx-post="{% url 'transactions:remove_from_cart' product.id %}" hx-target="#cart-panel" hx-swap="innerHTML">×</button>
+  </div>
+{% empty %}<p class="muted">Your bag is waiting for something special.</p>{% endfor %}
+{% if products %}<div class="cart-total"><span>Total</span><strong>R$ {{ total|floatformat:2 }}</strong></div><a class="button full" href="{% url 'transactions:checkout' %}">Checkout</a>{% endif %}

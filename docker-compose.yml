@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  telles-thrift-shop:
+    build: .
+    restart: unless-stopped
+    pull_policy: build
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: ["gunicorn", "telles_shop.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "60", "--access-logfile", "-", "--error-logfile", "-"]
+    volumes:
+      - .:/app
+      - database_data:/app/data
+      - ./media:/app/media
+      - ./staticfiles:/app/staticfiles
+    ports:
+      - "8002:8000"
+    networks:
+      - pi_default
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; r=urllib.request.Request('http://127.0.0.1:8000/health/', headers={'X-Forwarded-Proto':'https'}); urllib.request.urlopen(r, timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+volumes:
+  database_data:
+
+networks:
+  pi_default:
+    external: true
