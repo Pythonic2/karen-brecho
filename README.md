@@ -41,7 +41,7 @@ Run checks with:
 
 ## Docker deployment
 
-Production settings are centralized in the `.env` file at the project root. The Compose stack loads only this file. The current base URL is `https://gestcloud.com.br`; update `SITE_BASE_URL`, allowed hosts and CSRF origins there before moving to another Google Cloud domain.
+Production settings are centralized in Portainer's stack environment variables. Use “Load variables from .env file” to import the root `.env`; Portainer stores those values in the stack rather than creating a physical `.env` file. Compose passes the imported variables to Django without duplicating their values in YAML. The current base URL is `https://gestcloud.com.br`.
 
 ```bash
 docker compose up -d --build

@@ -3,8 +3,25 @@ services:
     build: .
     restart: unless-stopped
     pull_policy: build
-    env_file:
-      - .env
+    environment:
+      - DJANGO_SECRET_KEY
+      - DJANGO_DEBUG
+      - DJANGO_ALLOWED_HOSTS
+      - DJANGO_CSRF_TRUSTED_ORIGINS
+      - SITE_BASE_URL
+      - SQLITE_PATH
+      - MEDIA_ROOT
+      - SESSION_COOKIE_SECURE
+      - CSRF_COOKIE_SECURE
+      - SECURE_SSL_REDIRECT
+      - SECURE_HSTS_SECONDS
+      - EMAIL_BACKEND
+      - EMAIL_HOST
+      - EMAIL_PORT
+      - EMAIL_HOST_USER
+      - EMAIL_HOST_PASSWORD
+      - EMAIL_USE_TLS
+      - DEFAULT_FROM_EMAIL
     command: ["gunicorn", "telles_shop.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "60", "--access-logfile", "-", "--error-logfile", "-"]
     volumes:
       - .:/app
