@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   telles-thrift-shop:
     build: .
@@ -7,16 +5,9 @@ services:
     pull_policy: build
     env_file:
       - .env
-    environment:
-      - PYTHONUNBUFFERED=1
-      - SQLITE_PATH=/app/data/db.sqlite3
-      - MEDIA_ROOT=/app/media
     command: ["gunicorn", "telles_shop.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "60", "--access-logfile", "-", "--error-logfile", "-"]
     volumes:
       - .:/app
-      - database_data:/app/data
-      - ./media:/app/media
-      - ./staticfiles:/app/staticfiles
     ports:
       - "8002:8000"
     networks:
@@ -27,9 +18,6 @@ services:
       timeout: 5s
       retries: 3
       start_period: 20s
-
-volumes:
-  database_data:
 
 networks:
   pi_default:

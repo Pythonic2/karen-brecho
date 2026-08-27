@@ -41,14 +41,14 @@ Run checks with:
 
 ## Docker deployment
 
-Production settings are read from `.env`. The current base URL is `https://gestcloud.com.br`; update `SITE_BASE_URL`, allowed hosts and CSRF origins before moving to another Google Cloud domain.
+Production settings are centralized in the `.env` file at the project root. The Compose stack loads only this file. The current base URL is `https://gestcloud.com.br`; update `SITE_BASE_URL`, allowed hosts and CSRF origins there before moving to another Google Cloud domain.
 
 ```bash
 docker compose up -d --build
 docker compose exec app python manage.py createsuperuser
 ```
 
-The application is published on host port `8002` (`8002:8000`) and joins the existing external Docker network `pi_default`. SQLite uses the `database_data` volume; uploaded media and collected static files are persisted in the project directories. Configure the existing HTTPS reverse proxy to forward `gestcloud.com.br` to `telles-thrift-shop:8000` through `pi_default`, or to `127.0.0.1:8002` from the host.
+The application is published on host port `8002` (`8002:8000`) and joins the existing external Docker network `pi_default`. The project is mounted at `/app`, so SQLite, uploaded media and collected static files remain in the root project directories. Configure the existing HTTPS reverse proxy to forward `gestcloud.com.br` to `telles-thrift-shop:8000` through `pi_default`, or to `127.0.0.1:8002` from the host.
 
 To load the optional demonstration catalog:
 
