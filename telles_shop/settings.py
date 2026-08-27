@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
 TESTING = 'test' in sys.argv
+RUNNING_IN_DOCKER = os.getenv('RUNNING_IN_DOCKER', 'False').lower() in ('1', 'true', 'yes')
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'dev-only-telles-thrift-shop-key')
 DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() in ('1', 'true', 'yes')
 DEPLOYMENT_HOSTS = {'telles-thrift-shop.gestcloud.com.br', '127.0.0.1', 'localhost'}
@@ -38,9 +39,15 @@ TEMPLATES = [{
     ]},
 }]
 WSGI_APPLICATION = 'telles_shop.wsgi.application'
+configured_sqlite_path = os.getenv('SQLITE_PATH', '')
+if RUNNING_IN_DOCKER and configured_sqlite_path:
+    sqlite_path = Path(configured_sqlite_path)
+else:
+    sqlite_path = BASE_DIR / 'db.sqlite3'
+
 DATABASES = {'default': {
     'ENGINE': 'django.db.backends.sqlite3',
-    'NAME': os.getenv('SQLITE_PATH', BASE_DIR / 'db.sqlite3'),
+    'NAME': sqlite_path,
 }}
 AUTH_PASSWORD_VALIDATORS = []
 LANGUAGE_CODE = 'en-us'
@@ -59,7 +66,11 @@ STORAGES = {
     )},
 }
 MEDIA_URL = 'media/'
-MEDIA_ROOT = Path(os.getenv('MEDIA_ROOT', BASE_DIR / 'media'))
+MEDIA_ROOT = (
+    Path(os.getenv('MEDIA_ROOT', '/app/media'))
+    if RUNNING_IN_DOCKER else
+    BASE_DIR / 'media'
+)
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
 EMAIL_HOST = os.getenv('EMAIL_HOST', '')
@@ -67,7 +78,10 @@ EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() in ('1', 'true', 'yes')
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'hello@telles-thrift.test')
+# Gmail requires a valid RFC 5321 envelope sender. Portainer may strip angle
+# brackets from display-name values imported from .env, so the authenticated
+# Gmail address is deliberately used as the envelope sender.
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER or os.getenv('DEFAULT_FROM_EMAIL', 'hello@telles-thrift.test')
 SITE_BASE_URL = os.getenv('SITE_BASE_URL', 'http://127.0.0.1:8002')
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SESSION_COOKIE_SECURE = os.getenv('SESSION_COOKIE_SECURE', 'False').lower() in ('1', 'true', 'yes')
